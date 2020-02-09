@@ -36,9 +36,17 @@ public class ErrorFrameFlyweight {
   }
 
   public static ByteBuf encode(ByteBufAllocator allocator, int streamId, Throwable t) {
-    String message = t.getMessage() == null ? "" : t.getMessage();
-    ByteBuf data = ByteBufUtil.writeUtf8(allocator, message);
+    String errorData = errorDataFromException(t);
+    ByteBuf data = ByteBufUtil.writeUtf8(allocator, errorData);
     return encode(allocator, streamId, t, data);
+  }
+
+  public static String errorDataFromException(Throwable t) {
+    if (t instanceof RSocketException) {
+      return ((RSocketException) t).errorData();
+    }
+
+    return t.getMessage() == null ? "" : t.getMessage();
   }
 
   public static int errorCodeFromException(Throwable t) {

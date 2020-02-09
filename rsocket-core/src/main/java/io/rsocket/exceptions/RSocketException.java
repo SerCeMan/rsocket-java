@@ -53,4 +53,14 @@ public abstract class RSocketException extends RuntimeException {
    * @return the RSocket error code
    */
   public abstract int errorCode();
+
+  /**
+   * Returns the RSocket error data payload which will be encoded as a part of the
+   * <a href="https://github.com/rsocket/rsocket/blob/master/Protocol.md#error-frame-0x0b">Error Frame</a>.
+   *
+   * @return the RSocket error data
+   */
+  public String errorData() {
+    return getMessage();
+  }
 }
